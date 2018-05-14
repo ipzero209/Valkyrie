@@ -42,7 +42,7 @@ def getKey():
     if pano_status != 0:
         path = os.popen('tracepath -l 1460 {}'.format(pano_ip)).read()
         logger.critical('Cannot ping Panorama. Path (using pktlen=1460) is:\n\n{}'.format(path))
-        print "Cannot ping Panoram. Path (using pktlen=1460) is:\n\n{}".format(path)
+        print "Cannot ping Panorama. Path (using pktlen=1460) is:\n\n{}".format(path)
     key_params = {'type' : 'keygen',
                   'user' : user,
                   'password' : passwd}
@@ -143,8 +143,20 @@ def svcStart():
                         '\'sudo service valkyrie start\'.')
         print 'Valkyrie service exited. Please start the service manually using \'sudo ' \
               'service valkyrie start\'.'
+        return 1
     elif "(running)" in svc_status:
         logger.info('Valkyrie service started successfully')
+        return 0
+
+
+def svcStop():
+    """Stops the service"""
+    logger.info('Attempting to stop the service')
+    svc_stop = os.system('service valkyrie stop')
+    if svc_stop != 0:
+        logger.critical('Failed to stop valkyrie service')
+        return 1
+    return 0
 
 
 
@@ -177,7 +189,36 @@ def main():
         if prep == 1:
             logger.critical('Critical error in service setup. Please see log for additional details.')
             print "Critical error in service setup. Please see log for additional details."
-        s_start =
+        s_start = svcStart()
+        if s_start != 0:
+            logger.critical('Critical error starting the service. Please see log for details.')
+        logger.info('Setup complete')
+        print "Setup Complete"
+        exit(0)
+    elif args.renew:
+        if not os.path.isfile('/etc/valkyrie/data'):
+            logger.info('No data file found. Please check the location of the '
+                        'data file. The file name is \'data\' and it should  be '
+                        'located at /etc/valkyrie/')
+            print "Error opening the data file. Please see the setup log for details."
+            stop = svcStop()
+        if stop == 1:
+            logger.critical('Failed to stop the service. Exiting now.')
+            print "There was an error when attempting to stop the service."
+            exit(1)
+        k_status = getKey()
+        if k_status != 0:
+            logger.critical('There was an issue renewing the API key.')
+            exit(1)
+        start = svcStart()
+        if start != 0:
+            logger.warning('Error starting the service. Please start the service '
+                           'manually.')
+            print "There was an error when attempting to start the service. " \
+                  "Please start the service manually"
+        exit(0)
+    elif args.uninstall:
+        pass
 
 
 

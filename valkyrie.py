@@ -89,7 +89,7 @@ def getLogs(q_dict, q_id, key):
 
 def main():
     q_list = setQList()
-    d_dict = fetchAPIKey()
+    pano_dict = fetchAPIKey()
 
 
 
