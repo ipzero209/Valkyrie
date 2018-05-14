@@ -7,7 +7,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import logging
 import os
-import sys, time
+import sys
 import shelve
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -84,7 +84,51 @@ def fetchAPIKey():
         return d_dict
 
 
-def getLogs(q_dict, q_id, key):
+
+def logWorker(pano_dict, query_dict, query_id):
+    """Worker process for servicing log/query combo"""
+    logger = logging.getLogger('query_{}'.format(query_id))
+    logger.setLevel(logging.DEBUG)
+    fh = logging.FileHandler('var/log/pan/q_{}.log'.format(query_id))
+    formatter = logging.Formatter('%(asctime)s %(name)s\t%(levelname)s:\t\t%(message)s')
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+
+    last_seqno = 0
+    orig_query = query_dict['query']
+    query_params = {'type' : 'log',
+                    'log-type' : query_dict['logtype'],
+                    'nlogs' : '5000',
+                    'query' : query_dict['query'],
+                    'key' : pano_dict['api_key']}
+    log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=query_params, verify=False)
+    log_xml = et.fromstring(log_req.content)
+    job_id = log_xml.find('./result/job').text
+    j_status = jobChecker(pano_dict, job_id)
+
+
+
+def jobChecker(pano_dict, job_id):
+    """Checks status of a given query job"""
+    status = 'UNK'
+    while status != "FIN":
+        status_params = {'type' : 'op',
+                      'cmd' : '<show><query><jobs></jobs></query></show>',
+                      'key' : pano_dict['api_key']}
+        status_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=status_params, verify=False)
+        status_xml = et.fromstring(status_req.content)
+        job_list = status_xml.findall('./result/*')
+        for job in job_list:
+            id = job.find('id').text
+            if id == job_id:
+                status = job.find('status')
+    return 0
+
+
+
+
+
 
 
 def main():
