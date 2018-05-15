@@ -132,6 +132,10 @@ def logWorker(pano_dict, query_dict, query_id):
         else:
             for log in logs:
                 this_seqno = log.find('seqno').text
+                if this_seqno > last_seqno:
+                    last_seqno = this_seqno
+            parsend_worker = Process(target=parsend, args=(logs, query_dict['logtype']))
+            parsend_worker.start()
 
 
 
@@ -144,7 +148,7 @@ def fetchLogs(pano_dict, job_id):
     fetch_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=fetch_params, verify=False)
     fetch_xml = et.fromstring(fetch_req.content)
     count_node = fetch_xml.find('./result/log/logs')
-    log_count = count_node['count']
+    log_count = count_node.attrib['count']
     if log_count == "0":
         return None
     log_list = fetch_xml.findall('.result/log/logs/*')
