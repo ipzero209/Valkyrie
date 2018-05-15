@@ -117,6 +117,21 @@ def logWorker(pano_dict, query_dict, query_id):
         parsend_worker.start()
     while True:
         current_query = query_dict['query'] + " and seqno gt " + str(last_seqno)
+        query_params = {'type' : 'log',
+                        'log-type' : query_dict['logtype'],
+                        'nlogs' : '5000',
+                        'query' : current_query,
+                        'key' : pano_dict['api_key']}
+        log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip'], params=query_params, verify=False))
+        log_xml = et.fromstring(log_req.content)
+        job_id = log_xml.find('./result/job').text
+        j_status = jobChecker(pano_dict, job_id)
+        logs = fetchLogs(pano_dict, job_id)
+        if logs == None:
+            pass
+        else:
+            for log in logs:
+                this_seqno = log.find('seqno').text
 
 
 
@@ -128,11 +143,11 @@ def fetchLogs(pano_dict, job_id):
                     'key' : pano_dict['api_key']}
     fetch_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=fetch_params, verify=False)
     fetch_xml = et.fromstring(fetch_req.content)
-    count_node = fetch_xml.find('./log/logs')
+    count_node = fetch_xml.find('./result/log/logs')
     log_count = count_node['count']
     if log_count == "0":
         return None
-    log_list = fetch_xml.findall('./log/logs/*')
+    log_list = fetch_xml.findall('.result/log/logs/*')
     return log_list
 
 
