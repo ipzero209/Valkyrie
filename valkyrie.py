@@ -7,7 +7,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import logging
 import os
-import sys
+import socket
 import shelve
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -96,7 +96,6 @@ def logWorker(pano_dict, query_dict, query_id):
 
 
     last_seqno = 0
-    orig_query = query_dict['query']
     query_params = {'type' : 'log',
                     'log-type' : query_dict['logtype'],
                     'nlogs' : '5000',
@@ -106,6 +105,36 @@ def logWorker(pano_dict, query_dict, query_id):
     log_xml = et.fromstring(log_req.content)
     job_id = log_xml.find('./result/job').text
     j_status = jobChecker(pano_dict, job_id)
+    logs = fetchLogs(pano_dict, job_id)
+    if logs == None:
+        pass
+    else:
+        for log in logs:
+            this_seqno = log.find('seqno').text
+            if this_seqno > last_seqno:
+                last_seqno = this_seqno
+        parsend_worker = Process(target=parsend, args=(logs, query_dict['logtype']))
+        parsend_worker.start()
+    while True:
+        current_query = query_dict['query'] + " and seqno gt " + str(last_seqno)
+
+
+
+
+def fetchLogs(pano_dict, job_id):
+    """Fetches the results of the indicated query job and returns a list of log objects"""
+    fetch_params = {'type' : 'op',
+                    'cmd' : '<show><query><result><id>{}</id></result></query></show>'.format(job_id),
+                    'key' : pano_dict['api_key']}
+    fetch_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=fetch_params, verify=False)
+    fetch_xml = et.fromstring(fetch_req.content)
+    count_node = fetch_xml.find('./log/logs')
+    log_count = count_node['count']
+    if log_count == "0":
+        return None
+    log_list = fetch_xml.findall('./log/logs/*')
+    return log_list
+
 
 
 
@@ -126,7 +155,8 @@ def jobChecker(pano_dict, job_id):
     return 0
 
 
-
+def parsend(log_list, log_type):
+    """Worker process for parsing logs from XML to specified format and sending to Syslog server"""
 
 
 
