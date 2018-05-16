@@ -78,7 +78,7 @@ def fetchAPIKey():
         d_dict = {}
         s_data = shelve.open('/etc/valkyrie/data')
         api_key = s_data['api_key']
-        pano_ip =sdata['pano_ip']
+        pano_ip = s_data['pano_ip']
         d_dict['api_key'] = api_key
         d_dict['pano_ip'] = pano_ip
         return d_dict
@@ -134,7 +134,7 @@ def logWorker(pano_dict, query_dict, query_id):
                 this_seqno = log.find('seqno').text
                 if this_seqno > last_seqno:
                     last_seqno = this_seqno
-            parsend_worker = Process(target=parsend, args=(logs, query_dict['logtype']))
+            parsend_worker = Process(target=parsend, args=(logs, query_dict))
             parsend_worker.start()
 
 
@@ -151,7 +151,7 @@ def fetchLogs(pano_dict, job_id):
     log_count = count_node.attrib['count']
     if log_count == "0":
         return None
-    log_list = fetch_xml.findall('.result/log/logs/*')
+    log_list = fetch_xml.findall('./result/log/logs/*')
     return log_list
 
 
@@ -174,9 +174,20 @@ def jobChecker(pano_dict, job_id):
     return 0
 
 
-def parsend(log_list, log_type):
+def parsend(log_list, q_dict):
     """Worker process for parsing logs from XML to specified format and sending to Syslog server"""
-
+    syslog = logging.getLogger('syslog_sender')
+    syslog.setLevel(logging.DEBUG)
+    handler = logging.handlers.SyslogHandler(address=(q_dict['destination', 514]), facility='user')
+    syslog.addHandler(handler)
+    if q_dict['logtype'] == "TRAFFIC":
+        pass
+    elif q_dict['logtype'] == "THREAT":
+        pass0
+    elif q_dict['logtype'] == "URL":
+        pass
+    elif q_dict['logtype'] == "WILDFIRE":
+        pass
 
 
 

@@ -103,7 +103,7 @@ def prepService():
     cp_conf = os.system('cp ./valkyrie.conf /etc/valkyrie.conf')
     if cp_conf != 0:
         logger.critical('Failed to copy configuration file')
-    py_list = ['valkyrie.py', 'v_setup.py']
+    py_list = ['valkyrie.py', 'v_setup.py', 'panLogParse.py']
     for file in py_list:
         logger.info('Copying {} to /usr/local/bin'.format(file))
         py_copy = os.system('cp ./{} /usr/local/bin'.format(file))
