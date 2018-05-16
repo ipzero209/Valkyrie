@@ -45,4 +45,67 @@ def parseTraffic(logset):
         curr_log.append(log.find('dport').text)
         curr_log.append(log.find('natsport').text)
         curr_log.append(log.find('natdport').text)
+        curr_log.append(log.find('flags').text)
+        curr_log.append(log.find('proto').text)
+        curr_log.append(log.find('action').text)
+        curr_log.append(log.find('bytes').text)
+        curr_log.append(log.find('bytes_sent').text)
+        curr_log.append(log.find('bytes_received').text)
+        curr_log.append(log.find('packets').text)
+        curr_log.append(log.find('start').text)
+        curr_log.append(log.find('elapsed').text)
+        curr_log.append(log.find('category').text)
+        curr_log.append('0') #Future Use
+        curr_log.append(log.find('seqno').text)
+        curr_log.append(log.find('actionflags').text)
+        curr_log.append(log.find('srcloc').text)
+        curr_log.append(log.find('dstloc').text)
+        curr_log.append('0') #Future Use
+        curr_log.append(log.find('pkts_sent').text)
+        curr_log.append(log.find('pkts_received').text)
+        curr_log.append(log.find('session_end_reason').text)
+        curr_log.append(log.find('dg_hier_level_1').text)
+        curr_log.append(log.find('dg_hier_level_2').text)
+        curr_log.append(log.find('dg_hier_level_3').text)
+        curr_log.append(log.find('dg_hier_level_4').text)
+        curr_log.append('') # Vsys name - never used for GPCS firewalls. Add with support for non-GPCS firewalls.
+        curr_log.append(log.find('device_name').text)
+        curr_log.append(log.find('action-source').text)
+        curr_log.append('') # Source VM UUID
+        curr_log.append('') # Destination VM UUID
+        curr_log.append(log.find('tunnelid').text)
+        curr_log.append('') # IMSI
+        curr_log.append('') # Monitor tac
+        curr_log.append('') # IMEI
+        curr_log.append('') # Parent Sesion ID
+        curr_log.append('') # Parent Start Time
+        curr_log.append('') # Tunnel Type
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
