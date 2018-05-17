@@ -9,6 +9,7 @@ import logging
 import os
 import socket
 import shelve
+import panLogParse
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -181,9 +182,11 @@ def parsend(log_list, q_dict):
     handler = logging.handlers.SyslogHandler(address=(q_dict['destination', 514]), facility='user')
     syslog.addHandler(handler)
     if q_dict['logtype'] == "TRAFFIC":
-        pass
+        logs = panLogParse.parseTraffic(log_list)
+        for log in logs:
+            syslog.debug(log)
     elif q_dict['logtype'] == "THREAT":
-        pass0
+        pass
     elif q_dict['logtype'] == "URL":
         pass
     elif q_dict['logtype'] == "WILDFIRE":

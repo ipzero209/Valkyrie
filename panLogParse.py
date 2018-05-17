@@ -3,7 +3,7 @@ import xml.etree.ElementTree as et
 
 
 def parseTraffic(logset):
-    """Takes a list of log obects from an API query, parses them and returns
+    """Takes a list of log traffic obects from an API query, parses them and returns
     a list of logs in CSV format"""
     log_list = []
     for log in log_set:
@@ -30,7 +30,7 @@ def parseTraffic(logset):
         if dstuser == None:
             curr_log.append('')
         else:
-            curr_log.append(dstuser.text)
+            curr_log.append(log.find('dstuser.text'))
         curr_log.append(log.find('app').text)
         curr_log.append(log.find('vsys_id').text)
         curr_log.append(log.find('from').text)
@@ -80,9 +80,15 @@ def parseTraffic(logset):
         curr_log.append('') # Parent Sesion ID
         curr_log.append('') # Parent Start Time
         curr_log.append('') # Tunnel Type
+        curr_log_string = ",".join(curr_log)
+        log_list.append(curr_log)
+    return log_list
 
-
-
+def parseThreat(logset):
+    """Takes a list of log traffic objects from an API query, parses them and returns
+    a list of logs in CSV format"""
+    log_list = []
+    for log in log_set
 
 
 
