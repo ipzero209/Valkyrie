@@ -232,7 +232,7 @@ def main():
         if confirm == ('' or 'n' or 'N' or 'no' or 'No' or 'NO'):
             logger.info('Cancelling uninstall at user request.')
             exit(0)
-        elif config == ('y' or 'Y' or 'Yes' or 'yes' or 'YES'):
+        elif confirm == ('y' or 'Y' or 'Yes' or 'yes' or 'YES'):
             print "Proceding with uninstall."
             logger.warning('Uninstall confirmed by user')
             svcStop()
