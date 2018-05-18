@@ -159,6 +159,15 @@ def svcStop():
     return 0
 
 
+def removeFiles():
+    """Deletes Valkyrie related files"""
+    os.system('rm -rf /etc/valkyrie')
+    file_list = ['valkyrie.*', 'panLogParse.*', 'v_setup.*',]
+    for file in file_list:
+        os.system('rm -f /usr/local/bin/{}'.format(file))
+    os.system('rm -f /etc/init.d/valkyrie')
+    print "Manually delete log files located at /var/log/pan/ if desired."
+    return
 
 def main():
     logger.info('Created log directory')
@@ -218,8 +227,27 @@ def main():
                   "Please start the service manually"
         exit(0)
     elif args.uninstall:
-        pass
-
+        confirm = raw_input('This will uninstall Valkyrie from your system.\n'
+                            'Are you sure? (y/N): ')
+        if confirm == ('' or 'n' or 'N' or 'no' or 'No' or 'NO'):
+            logger.info('Cancelling uninstall at user request.')
+            exit(0)
+        elif config == ('y' or 'Y' or 'Yes' or 'yes' or 'YES'):
+            print "Proceding with uninstall."
+            logger.warning('Uninstall confirmed by user')
+            svcStop()
+            removeFiles()
+        else:
+            print "Please enter y or n. Exiting now."
+            logger.warning('Invalid choice for confirmation prompt. Exiting.')
+            exit(0)
+        stop = svcStop()
+        if stop == 1:
+            print "Failed to stop the service. Please manually stop Valkyrie after" \
+                  " uninstallation is complete."
+            logger.critical('Failed to stop the service. Please manually stop '
+                            'Valkyrie after the uninstallation is complete.')
+        removeFiles()
 
 
 
