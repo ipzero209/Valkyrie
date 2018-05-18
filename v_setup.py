@@ -69,6 +69,8 @@ def saveInfo(key_str, data):
     s_data = shelve.open('/etc/valkyrie/data')
     s_data[key_str] = data
     s_data.close()
+    logger.info('Setting permissions on data file')
+    conf_perm = os.system('chmod 766 /etc/valkyrie/data')
     logger.info('{} saved to data file'.format(key_str))
     return
 
@@ -99,7 +101,7 @@ def prepService():
     if cp_conf != 0:
         logger.critical('Failed to copy configuration file')
     logger.info('Setting permissions on configuration file')
-    conf_perm = os.system('chmod 766 /etc/valkyrie/valkyrie.conf')
+    conf_perm = os.system('chmod 755 /etc/valkyrie/valkyrie.conf')
     if conf_perm != 0:
         logger.critical('Failed to set permissions on configuration file')
     py_list = ['valkyrie.py', 'v_setup.py', 'panLogParse.py']
