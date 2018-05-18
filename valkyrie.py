@@ -70,6 +70,9 @@ def setQDict():
                                 + 'TRAFFIC\nTHREAT\nURL\nWILDFIRE\n'
                                 + 'Please modify /etc/valkyrie/valkyrie.conf. Exiting.')
                 exit(1)
+    else:
+        logger.critical('Configuration file not found. Please check /etc/valkyrie')
+        exit(1)
     o_file.close()
     return query_dict
 
