@@ -11,8 +11,8 @@
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
 DIR=/usr/local/bin
-DAEMON=$DIR/pan_shim.py
-DAEMON_NAME=shim_svc
+DAEMON=$DIR/valkyrie.py
+DAEMON_NAME=valkyrie
 
 DAEMON_OPTS=""
 
