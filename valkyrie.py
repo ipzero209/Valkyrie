@@ -100,11 +100,17 @@ def logWorker(pano_dict, query_dict, query_id):
 
 
     last_seqno = 0
-    query_params = {'type' : 'log',
-                    'log-type' : query_dict['logtype'],
-                    'nlogs' : '5000',
-                    'query' : query_dict['query'],
-                    'key' : pano_dict['api_key']}
+    if query_dict['query'] = "":
+        query_params = {'type': 'log',
+                        'log-type': query_dict['logtype'],
+                        'nlogs': '5000',
+                        'key': pano_dict['api_key']}
+    else:
+        query_params = {'type' : 'log',
+                        'log-type' : query_dict['logtype'],
+                        'nlogs' : '5000',
+                        'query' : query_dict['query'],
+                        'key' : pano_dict['api_key']}
     log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=query_params, verify=False)
     w_logger.debug(log_req.url)
     w_logger.debug(log_req.content)
