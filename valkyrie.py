@@ -91,6 +91,8 @@ def fetchAPIKey():
 
 def logWorker(pano_dict, query_dict, query_id):
     """Worker process for servicing log/query combo"""
+    os.system('touch /var/log/pan/q_{}'.format(query_id))
+    os.system('chmod 777 /var/log/pan/q_{}'.format(query_id))
     w_logger = logging.getLogger('query_{}'.format(query_id))
     w_logger.setLevel(logging.DEBUG)
     fh = logging.FileHandler('/var/log/pan/q_{}.log'.format(query_id))
