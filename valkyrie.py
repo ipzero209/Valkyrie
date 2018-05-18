@@ -186,11 +186,18 @@ def parsend(log_list, q_dict):
         for log in logs:
             syslog.debug(log)
     elif q_dict['logtype'] == "THREAT":
-        pass
+        logs = panLogParse.parseThreat(log_list)
+        for log in logs:
+            syslog.debug(log)
     elif q_dict['logtype'] == "URL":
-        pass
+        logs = panLogParse.parseURL(log_list)
+        for log in logs:
+            syslog.debug(log)
     elif q_dict['logtype'] == "WILDFIRE":
-        pass
+        logs = panLogParse.parseWF(log_list)
+        for log in logs:
+            syslog.debug(log)
+
 
 
 
