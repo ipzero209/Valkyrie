@@ -195,19 +195,19 @@ def parsend(log_list, q_dict):
     syslog.setLevel(logging.DEBUG)
     handler = logging.handlers.SyslogHandler(address=(q_dict['destination'], 514), facility='user')
     syslog.addHandler(handler)
-    if q_dict['logtype'] == "TRAFFIC":
+    if q_dict['logtype'] == "traffic":
         logs = panLogParse.parseTraffic(log_list)
         for log in logs:
             syslog.debug(log)
-    elif q_dict['logtype'] == "THREAT":
+    elif q_dict['logtype'] == "threat":
         logs = panLogParse.parseThreat(log_list)
         for log in logs:
             syslog.debug(log)
-    elif q_dict['logtype'] == "URL":
+    elif q_dict['logtype'] == "url":
         logs = panLogParse.parseURL(log_list)
         for log in logs:
             syslog.debug(log)
-    elif q_dict['logtype'] == "WILDFIRE":
+    elif q_dict['logtype'] == "wildfire":
         logs = panLogParse.parseWF(log_list)
         for log in logs:
             syslog.debug(log)
