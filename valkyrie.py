@@ -101,7 +101,7 @@ def logWorker(pano_dict, query_dict, query_id):
 
     last_seqno = 0
     query_params = {'type' : 'log',
-                    'log-type' : query_dict['logtype'].lower,
+                    'log-type' : query_dict['logtype'],
                     'nlogs' : '5000',
                     'query' : query_dict['query'],
                     'key' : pano_dict['api_key']}
