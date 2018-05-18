@@ -95,7 +95,7 @@ def prepService():
         logger.critical('Failed to set permissions on /etc/init.d/valkyrie')
         return 1
     logger.info('Creating /etc/valkyrie')
-    mk_conf_dir = os.system('mkdir /etc/valkyrie')
+    mk_conf_dir = os.system('mkdir /etc/valkyrie/')
     if mk_conf_dir != 0:
         logger.critical('Failed to create /etc/valkyrie')
         return 1
