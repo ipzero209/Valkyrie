@@ -5,8 +5,8 @@
 # REQUIRED-STOP:
 # DEFAULT-START: 2 3 4 5
 # DEFAULT-STOP:  0 1 6
-# Short-Description: Dev Mon data shim
-# Description: Provides DevMon data ingestion for firewalls running PAN-OS 8.0 and earlier
+# Short-Description: LS filtered log forwarder
+# Description: Provides filtered log forwarding from the Logging Service via Panorama API
 #### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
