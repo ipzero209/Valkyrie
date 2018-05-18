@@ -87,7 +87,7 @@ can be one of:
 
 2. Forwarding process. This takes the form of 'LOGTYPE:QUERY:DESTINATION'
 
-    A. LOGTYPE: Can be one of TRAFFIC, THREAT, URL, WILDFIRE.
+    A. LOGTYPE: Can be one of traffic, threat, url, wildfire.
     
     B. QUERY: Query string to match. Uses the same query syntax as Panorama 
     (e.g. 'subtype eq spyware').
