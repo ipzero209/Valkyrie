@@ -1,6 +1,6 @@
 #!/bin/sh -e
 ### BEGIN INIT INFO
-# PROVIDES:		shim_svc
+# PROVIDES:		valkyrie
 # REQUIRED-START:
 # REQUIRED-STOP:
 # DEFAULT-START: 2 3 4 5
