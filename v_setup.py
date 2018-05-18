@@ -23,6 +23,8 @@ if os.path.isdir('/var/log/pan'):
     pass
 else:
     os.system('mkdir /var/log/pan')
+    logger.info('Created log directory')
+    os.system('chmod 777 /var/log/pan')
 
 logger = logging.getLogger("setup")
 logger.setLevel(logging.DEBUG)
@@ -171,7 +173,7 @@ def removeFiles():
     return
 
 def main():
-    logger.info('Created log directory')
+
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-i", "--install", help="Installs Valkyrie", action="store_true")
