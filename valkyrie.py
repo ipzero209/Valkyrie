@@ -100,7 +100,7 @@ def logWorker(pano_dict, query_dict, query_id):
 
 
     last_seqno = 0
-    if query_dict['query'] = "":
+    if query_dict['query'] == "":
         query_params = {'type': 'log',
                         'log-type': query_dict['logtype'],
                         'nlogs': '5000',
