@@ -49,7 +49,7 @@ else:
 
 
 
-def setQList():
+def setQDict():
     query_dict = {}
     query_num = 1
     if os.path.isfile('/etc/valkyrie/valkyrie.conf'):
@@ -179,7 +179,7 @@ def parsend(log_list, q_dict):
     """Worker process for parsing logs from XML to specified format and sending to Syslog server"""
     syslog = logging.getLogger('syslog_sender')
     syslog.setLevel(logging.DEBUG)
-    handler = logging.handlers.SyslogHandler(address=(q_dict['destination', 514]), facility='user')
+    handler = logging.handlers.SyslogHandler(address=(q_dict['destination'], 514), facility='user')
     syslog.addHandler(handler)
     if q_dict['logtype'] == "TRAFFIC":
         logs = panLogParse.parseTraffic(log_list)
@@ -197,13 +197,18 @@ def parsend(log_list, q_dict):
         logs = panLogParse.parseWF(log_list)
         for log in logs:
             syslog.debug(log)
+    return
 
 
 
 
 def main():
-    q_list = setQList()
+    q_dict = setQDict()
     pano_dict = fetchAPIKey()
+    for query_id in q_dict:
+        worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id))
+        worker_proc.start()
+
 
 
 
