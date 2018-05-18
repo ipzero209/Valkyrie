@@ -59,7 +59,7 @@ def setQDict():
             line = line.split(':')
             if line[0] == "LEVEL":
                 pass
-            elif line[0] in ['TRAFFIC', 'THREAT', 'URL', 'WILDFIRE']:
+            elif line[0] in ['traffic', 'threat', 'url', 'wildfire']:
                 query_dict[query_num] = {'logtype' : line[0], 'query' : line[1] , 'destination' : line[2]}
                 if query_dict[query_num]['query'] == "":
                     logger.warning('Sending an open query may result in an inability to keep up with log generation'
