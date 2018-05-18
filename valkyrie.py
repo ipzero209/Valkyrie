@@ -91,8 +91,6 @@ def fetchAPIKey():
 
 def logWorker(pano_dict, query_dict, query_id):
     """Worker process for servicing log/query combo"""
-    os.system('touch /var/log/pan/q_{}'.format(query_id))
-    os.system('chmod 777 /var/log/pan/q_{}'.format(query_id))
     w_logger = logging.getLogger('query_{}'.format(query_id))
     w_logger.setLevel(logging.DEBUG)
     fh = logging.FileHandler('/var/log/pan/q_{}.log'.format(query_id))
@@ -103,7 +101,7 @@ def logWorker(pano_dict, query_dict, query_id):
 
     last_seqno = 0
     query_params = {'type' : 'log',
-                    'log-type' : query_dict['logtype'],
+                    'log-type' : query_dict['logtype'].lower,
                     'nlogs' : '5000',
                     'query' : query_dict['query'],
                     'key' : pano_dict['api_key']}
@@ -125,7 +123,7 @@ def logWorker(pano_dict, query_dict, query_id):
     while True:
         current_query = query_dict['query'] + " and seqno gt " + str(last_seqno)
         query_params = {'type' : 'log',
-                        'log-type' : query_dict['logtype'],
+                        'log-type' : query_dict['logtype'].lower,
                         'nlogs' : '5000',
                         'query' : current_query,
                         'key' : pano_dict['api_key']}
