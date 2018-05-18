@@ -48,7 +48,7 @@ def getKey():
                   'password' : passwd}
     try:
         key_req = requests.get('https://{}/api/?'.format(pan_ip), params=key_params, verify=False)
-    except exception as e:
+    except Exception as e:
         logger.critical("Unable to reach Panorama on TCP/443. Error is: \n\n{}".format(e))
         print "Unable to reach Panorama on TCP/443. Error is:\n\n{}".format(e)
     key_xml = et.fromstring(key_req.content)
