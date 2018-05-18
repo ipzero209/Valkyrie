@@ -106,6 +106,7 @@ def logWorker(pano_dict, query_dict, query_id):
                     'query' : query_dict['query'],
                     'key' : pano_dict['api_key']}
     log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=query_params, verify=False)
+    w_logger.debug(log_req.url)
     w_logger.debug(log_req.content)
     log_xml = et.fromstring(log_req.content)
     job_id = log_xml.find('./result/job').text
