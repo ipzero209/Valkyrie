@@ -93,7 +93,7 @@ def logWorker(pano_dict, query_dict, query_id):
     """Worker process for servicing log/query combo"""
     w_logger = logging.getLogger('query_{}'.format(query_id))
     w_logger.setLevel(logging.DEBUG)
-    fh = logging.FileHandler('var/log/pan/q_{}.log'.format(query_id))
+    fh = logging.FileHandler('/var/log/pan/q_{}.log'.format(query_id))
     formatter = logging.Formatter('%(asctime)s %(name)s\t%(levelname)s:\t\t%(message)s')
     fh.setFormatter(formatter)
     w_logger.addHandler(fh)
