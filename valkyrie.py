@@ -147,6 +147,8 @@ def logWorker(pano_dict, query_dict, query_id):
 
 
 
+
+
 def fetchLogs(pano_dict, job_id):
     """Fetches the results of the indicated query job and returns a list of log objects"""
     fetch_params = {'type' : 'op',
@@ -204,7 +206,6 @@ def parsend(log_list, q_dict):
         for log in logs:
             syslog.debug(log)
     return
-
 
 
 
