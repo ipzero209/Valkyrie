@@ -88,12 +88,12 @@ def fetchAPIKey():
 
 def logWorker(pano_dict, query_dict, query_id):
     """Worker process for servicing log/query combo"""
-    logger = logging.getLogger('query_{}'.format(query_id))
-    logger.setLevel(logging.DEBUG)
+    w_logger = logging.getLogger('query_{}'.format(query_id))
+    w_logger.setLevel(logging.DEBUG)
     fh = logging.FileHandler('var/log/pan/q_{}.log'.format(query_id))
     formatter = logging.Formatter('%(asctime)s %(name)s\t%(levelname)s:\t\t%(message)s')
     fh.setFormatter(formatter)
-    logger.addHandler(fh)
+    w_logger.addHandler(fh)
 
 
     last_seqno = 0
@@ -103,6 +103,7 @@ def logWorker(pano_dict, query_dict, query_id):
                     'query' : query_dict['query'],
                     'key' : pano_dict['api_key']}
     log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=query_params, verify=False)
+    w_logger.debug(log_req.content)
     log_xml = et.fromstring(log_req.content)
     job_id = log_xml.find('./result/job').text
     j_status = jobChecker(pano_dict, job_id)
