@@ -94,11 +94,6 @@ def prepService():
     if v_perm != 0:
         logger.critical('Failed to set permissions on /etc/init.d/valkyrie')
         return 1
-    # logger.info('Creating /etc/valkyrie')
-    # mk_conf_dir = os.system('mkdir /etc/valkyrie/')
-    # if mk_conf_dir != 0:
-    #     logger.critical('Failed to create /etc/valkyrie')
-    #     return 1
     logger.info('Copying configuration file to /etc/valkyrie')
     cp_conf = os.system('cp ./valkyrie.conf /etc/valkyrie.conf')
     if cp_conf != 0:
