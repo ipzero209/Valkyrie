@@ -156,7 +156,7 @@ def logWorker(pano_dict, query_dict, query_id):
 
 
 def fetchLogs(pano_dict, job_id):
-    """Fetches the results of the indicated query job and returns a list of log objects"""
+    """Fetches the results of the indicated query job and returns a list of log objects in XML format"""
     fetch_params = {'type' : 'op',
                     'cmd' : '<show><query><result><id>{}</id></result></query></show>'.format(job_id),
                     'key' : pano_dict['api_key']}
