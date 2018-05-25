@@ -132,8 +132,8 @@ def logWorker(pano_dict, query_dict, query_id):
     while True:
         if query_dict['query'] == "":
             query_params = {'type' : 'log',
-                            'log-type' : query_dict['logtype',
-                            'query' : 'seqno geq {}'.format(last_seqno)],
+                            'log-type' : query_dict['logtype'],
+                            'query' : 'seqno geq {}'.format(last_seqno),
                             'key' : pano_dict['api_key']}
         else:
             current_query = query_dict['query'] + " and seqno gt " + str(last_seqno)
@@ -203,7 +203,7 @@ def parsend(log_list, q_dict):
     """Worker process for parsing logs from XML to specified format and sending to Syslog server"""
     syslog = logging.getLogger('syslog_sender')
     syslog.setLevel(logging.DEBUG)
-    handler = logging.handlers.SyslogHandler(address=(q_dict['destination'], 514), facility='user')
+    handler = logging.handlers.SysLogHandler(address=(q_dict['destination'], 514), facility='user')
     syslog.addHandler(handler)
     if q_dict['logtype'] == "traffic":
         logs = panLogParse.parseTraffic(log_list)
