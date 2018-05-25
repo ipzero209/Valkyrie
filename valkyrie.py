@@ -193,7 +193,7 @@ def jobChecker(pano_dict, job_id):
         for job in job_list:
             id = job.find('id').text
             if id == job_id:
-                status = job.find('status')
+                status = job.find('status').text
                 logger.debug(status)
     return 0
 
