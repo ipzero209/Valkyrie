@@ -11,6 +11,7 @@ import os
 import socket
 import shelve
 import panLogParse
+import pudb
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -142,7 +143,7 @@ def logWorker(pano_dict, query_dict, query_id):
                             'nlogs' : '5000',
                             'query' : current_query,
                             'key' : pano_dict['api_key']}
-        log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip'], params=query_params, verify=False))
+        log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=query_params, verify=False)
         w_logger.debug(log_req.content)
         log_xml = et.fromstring(log_req.content)
         job_id = log_xml.find('./result/job').text
@@ -230,8 +231,10 @@ def main():
     q_dict = setQDict()
     pano_dict = fetchAPIKey()
     for query_id in q_dict:
-        worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id))
-        worker_proc.start()
+        pudb.set_trace()
+        logWorker(pano_dict, q_dict[query_id], query_id)
+        # worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id))
+        # worker_proc.start()
 
 
 
