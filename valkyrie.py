@@ -124,16 +124,23 @@ def logWorker(pano_dict, query_dict, query_id):
         for log in logs:
             this_seqno = log.find('seqno').text
             if this_seqno > last_seqno:
-                last_seqno = this_seqno
+                last_seqno = int(this_seqno)
+                last_seqno = str(last_seqno + 1)
         parsend_worker = Process(target=parsend, args=(logs, query_dict['logtype']))
         parsend_worker.start()
     while True:
-        current_query = query_dict['query'] + " and seqno gt " + str(last_seqno)
-        query_params = {'type' : 'log',
-                        'log-type' : query_dict['logtype'].lower,
-                        'nlogs' : '5000',
-                        'query' : current_query,
-                        'key' : pano_dict['api_key']}
+        if query_dict['query'] == "":
+            query_params = {'type' : 'log',
+                            'log-type' : query_dict['logtype',
+                            'query' : 'seqno geq {}'.format(last_seqno)],
+                            'key' : pano_dict['api_key']}
+        else:
+            current_query = query_dict['query'] + " and seqno gt " + str(last_seqno)
+            query_params = {'type' : 'log',
+                            'log-type' : query_dict['logtype'].lower,
+                            'nlogs' : '5000',
+                            'query' : current_query,
+                            'key' : pano_dict['api_key']}
         log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip'], params=query_params, verify=False))
         w_logger.debug(log_req.content)
         log_xml = et.fromstring(log_req.content)
@@ -146,7 +153,8 @@ def logWorker(pano_dict, query_dict, query_id):
             for log in logs:
                 this_seqno = log.find('seqno').text
                 if this_seqno > last_seqno:
-                    last_seqno = this_seqno
+                    last_seqno = int(this_seqno)
+                    last_seqno = str(last_seqno + 1)
             parsend_worker = Process(target=parsend, args=(logs, query_dict))
             parsend_worker.start()
 
@@ -186,6 +194,7 @@ def jobChecker(pano_dict, job_id):
             id = job.find('id').text
             if id == job_id:
                 status = job.find('status')
+                logger.debug(status)
     return 0
 
 
@@ -198,6 +207,7 @@ def parsend(log_list, q_dict):
     if q_dict['logtype'] == "traffic":
         logs = panLogParse.parseTraffic(log_list)
         for log in logs:
+            logger.debug('sending {}'.format(log))
             syslog.debug(log)
     elif q_dict['logtype'] == "threat":
         logs = panLogParse.parseThreat(log_list)
