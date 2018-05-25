@@ -5,8 +5,7 @@ from multiprocessing import Process
 import xml.etree.ElementTree as et
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-import logging
-import logging.handlers
+from logging import *
 import os
 import socket
 import shelve
