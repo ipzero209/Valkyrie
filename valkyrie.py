@@ -6,7 +6,7 @@ import xml.etree.ElementTree as et
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import logging
-from logging.handlers
+import logging.handlers
 import os
 import socket
 import shelve
