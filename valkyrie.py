@@ -160,8 +160,8 @@ def logWorker(pano_dict, query_dict, query_id, logger):
                     last_seqno = int(this_seqno)
             last_seqno = str(last_seqno + 1)
             parsend(logs, query_dict, logger)
-            parsend_worker = Process(target=parsend, args=(logs, query_dict))
-            parsend_worker.start()
+            # parsend_worker = Process(target=parsend, args=(logs, query_dict))
+            # parsend_worker.start()
 
 
 
