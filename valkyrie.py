@@ -137,6 +137,7 @@ def logWorker(pano_dict, query_dict, query_id, logger):
             query_params = {'type' : 'log',
                             'log-type' : query_dict['logtype'],
                             'query' : 'seqno geq {}'.format(last_seqno),
+                            'nlogs' : '5000'
                             'key' : pano_dict['api_key']}
         else:
             current_query = query_dict['query'] + " and seqno gt " + str(last_seqno)
@@ -241,7 +242,7 @@ def main():
     q_dict = setQDict()
     pano_dict = fetchAPIKey()
     for query_id in q_dict:
-        syslog = logMaker(q_dict[query_id]['destination'])
+        syslog = logMaker(q_dict[query_id]  ['destination'])
         logWorker(pano_dict, q_dict[query_id], query_id, syslog)
         # worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id))
         # worker_proc.start()
