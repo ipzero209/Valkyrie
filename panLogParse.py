@@ -4,7 +4,7 @@ import xml.etree.ElementTree as et
 
 def parseTraffic(logset):
     """Takes a list of log traffic obects from an API query, parses them and returns
-    a list of logs in CSV format"""
+    a list of logs in CSV format."""
     log_list = []
     for log in logset:
         curr_log = []
