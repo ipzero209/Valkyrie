@@ -137,7 +137,7 @@ def logWorker(pano_dict, query_dict, query_id, logger):
             query_params = {'type' : 'log',
                             'log-type' : query_dict['logtype'],
                             'query' : 'seqno geq {}'.format(last_seqno),
-                            'nlogs' : '5000'
+                            'nlogs' : '5000',
                             'key' : pano_dict['api_key']}
         else:
             current_query = query_dict['query'] + " and seqno gt " + str(last_seqno)
