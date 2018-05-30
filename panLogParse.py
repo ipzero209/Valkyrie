@@ -33,7 +33,6 @@ def parseTraffic(logset):
             curr_log.append('')
         else:
             curr_log.append(natdst.text)
-        curr_log.append(log.find('natdst').text)
         curr_log.append(log.find('rule').text)
         srcuser = log.find('srcuser')
         if srcuser == None:
