@@ -83,7 +83,7 @@ def parseTraffic(logset):
         curr_log.append(log.find('dg_hier_level_4').text)
         curr_log.append('') # Vsys name - never used for GPCS firewalls. Add with support for non-GPCS firewalls.
         curr_log.append(log.find('device_name').text)
-        curr_log.append(log.find('action-source').text)
+        curr_log.append(log.find('action_source').text)
         curr_log.append('') # Source VM UUID
         curr_log.append('') # Destination VM UUID
         curr_log.append(log.find('tunnelid').text)
