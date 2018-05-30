@@ -1,17 +1,18 @@
 #!/usr/bin/python
 
 
-from multiprocessing import Process
+
 import xml.etree.ElementTree as et
 import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import logging
 import logging.handlers
 import os
-import socket
 import shelve
 import panLogParse
 import pudb
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from multiprocessing import Process
+from time import sleep
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -91,7 +92,7 @@ def fetchAPIKey():
 
 
 
-def logWorker(pano_dict, query_dict, query_id):
+def logWorker(pano_dict, query_dict, query_id, logger):
     """Worker process for servicing log/query combo"""
     w_logger = logging.getLogger('query_{}'.format(query_id))
     w_logger.setLevel(logging.DEBUG)
@@ -127,9 +128,10 @@ def logWorker(pano_dict, query_dict, query_id):
             this_seqno = log.find('seqno').text
             if this_seqno > last_seqno:
                 last_seqno = int(this_seqno)
-                last_seqno = str(last_seqno + 1)
-        parsend_worker = Process(target=parsend, args=(logs, query_dict['logtype']))
-        parsend_worker.start()
+        last_seqno = str(last_seqno + 1)
+        parsend(logs, query_dict, logger)
+        # parsend_worker = Process(target=parsend, args=(logs, query_dict))
+        # parsend_worker.start()
     while True:
         if query_dict['query'] == "":
             query_params = {'type' : 'log',
@@ -156,7 +158,8 @@ def logWorker(pano_dict, query_dict, query_id):
                 this_seqno = log.find('seqno').text
                 if this_seqno > last_seqno:
                     last_seqno = int(this_seqno)
-                    last_seqno = str(last_seqno + 1)
+            last_seqno = str(last_seqno + 1)
+            parsend(logs, query_dict, logger)
             parsend_worker = Process(target=parsend, args=(logs, query_dict))
             parsend_worker.start()
 
@@ -197,42 +200,49 @@ def jobChecker(pano_dict, job_id):
             if id == job_id:
                 status = job.find('status').text
                 logger.debug(status)
+        sleep(5)
     return 0
 
 
-def parsend(log_list, q_dict):
+def parsend(log_list, q_dict, s_logger):
     """Worker process for parsing logs from XML to specified format and sending to Syslog server"""
-    syslog = logging.getLogger('syslog_sender')
-    syslog.setLevel(logging.DEBUG)
-    handler = logging.handlers.SysLogHandler(address=(q_dict['destination'], 514), facility='user')
-    syslog.addHandler(handler)
+    # syslog = logging.getLogger('syslog_sender')
+    # syslog.setLevel(logging.DEBUG)
+    # handler = logging.handlers.SysLogHandler(address=(q_dict['destination'], 514), facility='user')
+    # syslog.addHandler(handler)
     if q_dict['logtype'] == "traffic":
         logs = panLogParse.parseTraffic(log_list)
         for log in logs:
             logger.debug('sending {}'.format(log))
-            syslog.debug(log)
+            s_logger.debug(log)
     elif q_dict['logtype'] == "threat":
         logs = panLogParse.parseThreat(log_list)
         for log in logs:
-            syslog.debug(log)
+            s_logger.debug(log)
     elif q_dict['logtype'] == "url":
         logs = panLogParse.parseURL(log_list)
         for log in logs:
-            syslog.debug(log)
+            s_logger.debug(log)
     elif q_dict['logtype'] == "wildfire":
         logs = panLogParse.parseWF(log_list)
         for log in logs:
-            syslog.debug(log)
+            s_logger.debug(log)
     return
 
-
+def logMaker(destination):
+    """Creates a syslog logger for each thread"""
+    logger = logging.getLogger('syslog_sender')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.handlers.SysLogHandler(address=(destination, 514), facility='user')
+    logger.addHandler(handler)
+    return logger
 
 def main():
     q_dict = setQDict()
     pano_dict = fetchAPIKey()
     for query_id in q_dict:
-        pudb.set_trace()
-        logWorker(pano_dict, q_dict[query_id], query_id)
+        syslog = logMaker(query_id['destination'])
+        logWorker(pano_dict, q_dict[query_id], query_id, syslog)
         # worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id))
         # worker_proc.start()
 

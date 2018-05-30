@@ -279,7 +279,7 @@ def parseURL(logset):
             curr_log.append('')
         else:
             curr_log.append(misc.text)
-        curr_log.append(log.find('threatid').text)
+        # curr_log.append(log.find('threatid').text)
         curr_log.append(log.find('category').text)
         curr_log.append(log.find('severity').text)
         curr_log.append(log.find('direction').text)
