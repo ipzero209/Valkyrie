@@ -23,7 +23,16 @@ def parseTraffic(logset):
         curr_log.append(log.find('time_generated').text)
         curr_log.append(log.find('src').text)
         curr_log.append(log.find('dst').text)
-        curr_log.append(log.find('natsrc').text)
+        natsrc = log.find('natsrc')
+        if natsrc == None:
+            curr_log.append('')
+        else:
+            curr_log.append(natsrc.text)
+        natdst = log.find('natdst')
+        if natdst == None:
+            curr_log.append('')
+        else:
+            curr_log.append(natdst.text)
         curr_log.append(log.find('natdst').text)
         curr_log.append(log.find('rule').text)
         srcuser = log.find('srcuser')
