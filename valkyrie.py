@@ -242,7 +242,7 @@ def main():
     q_dict = setQDict()
     pano_dict = fetchAPIKey()
     for query_id in q_dict:
-        syslog = logMaker(q_dict[query_id]  ['destination'])
+        syslog = logMaker(q_dict[query_id]['destination'])
         logWorker(pano_dict, q_dict[query_id], query_id, syslog)
         worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id, syslog))
         worker_proc.start()
