@@ -152,6 +152,7 @@ def logWorker(pano_dict, query_dict, query_id, logger):
         job_id = log_xml.find('./result/job').text
         j_status = jobChecker(pano_dict, job_id)
         logs = fetchLogs(pano_dict, job_id)
+        logger.debug('{} logs fetched: {}'.format(query_dict['logtype'], len(logs)))
         if logs == None:
             pass
         else:
@@ -243,7 +244,7 @@ def main():
     pano_dict = fetchAPIKey()
     for query_id in q_dict:
         syslog = logMaker(q_dict[query_id]['destination'])
-        logWorker(pano_dict, q_dict[query_id], query_id, syslog)
+        # logWorker(pano_dict, q_dict[query_id], query_id, syslog)
         worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id, syslog))
         worker_proc.start()
 
