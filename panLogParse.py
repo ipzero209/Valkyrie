@@ -429,8 +429,16 @@ def parseWF(logset):
             curr_log.append('')
         else:
             curr_log.append(sender.text)
-        curr_log.append(log.find('subject').text) # Subject - only used for WF subtype
-        curr_log.append(log.find('recipient').text) # Recipient - only used for WF subtype
+        subject = log.find('subject') # Subject - only used for WF subtype
+        if subject == None:
+            curr_log.append('')
+        else:
+            curr_log.append(subject.text)
+        recipient = log.find('recipient') # Recipient - only used for WF subtype
+        if recipient == None:
+            curr_log.append('')
+        else:
+            curr_log.append(recipient.text)
         curr_log.append(log.find('reportid').text) # Report ID - only used for WF subtype
         curr_log.append(log.find('dg_hier_level_1').text)
         curr_log.append(log.find('dg_hier_level_2').text)
