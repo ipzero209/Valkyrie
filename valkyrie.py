@@ -129,9 +129,9 @@ def logWorker(pano_dict, query_dict, query_id, logger):
             if this_seqno > last_seqno:
                 last_seqno = int(this_seqno)
         last_seqno = str(last_seqno + 1)
-        # parsend(logs, query_dict, logger)
-        parsend_worker = Process(target=parsend, args=(logs, query_dict, logger))
-        parsend_worker.start()
+        parsend(logs, query_dict, logger)
+        # parsend_worker = Process(target=parsend, args=(logs, query_dict, logger))
+        # parsend_worker.start()
     while True:
         if query_dict['query'] == "":
             query_params = {'type' : 'log',
@@ -161,9 +161,9 @@ def logWorker(pano_dict, query_dict, query_id, logger):
                 if this_seqno > last_seqno:
                     last_seqno = int(this_seqno)
             last_seqno = str(last_seqno + 1)
-            # parsend(logs, query_dict, logger)
-            parsend_worker = Process(target=parsend, args=(logs, query_dict, logger))
-            parsend_worker.start()
+            parsend(logs, query_dict, logger)
+            # parsend_worker = Process(target=parsend, args=(logs, query_dict, logger))
+            # parsend_worker.start()
 
 
 
@@ -244,9 +244,9 @@ def main():
     pano_dict = fetchAPIKey()
     for query_id in q_dict:
         syslog = logMaker(q_dict[query_id]['destination'])
-        # logWorker(pano_dict, q_dict[query_id], query_id, syslog)
-        worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id, syslog))
-        worker_proc.start()
+        logWorker(pano_dict, q_dict[query_id], query_id, syslog)
+        # worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id, syslog))
+        # worker_proc.start()
 
 
 
