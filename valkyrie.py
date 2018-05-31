@@ -145,12 +145,11 @@ def logWorker(pano_dict, query_dict, query_id, logger):
                             'query' : current_query,
                             'key' : pano_dict['api_key']}
         log_req = requests.get('https://{}/api/?'.format(pano_dict['pano_ip']), params=query_params, verify=False)
-        w_logger.debug(log_req.content)
         log_xml = et.fromstring(log_req.content)
         job_id = log_xml.find('./result/job').text
         j_status = jobChecker(pano_dict, job_id)
         logs = fetchLogs(pano_dict, job_id)
-        logger.debug('{} logs fetched: {}'.format(query_dict['logtype'], len(logs)))
+        w_logger.debug('{} logs fetched: {}'.format(query_dict['logtype'], len(logs)))
         if logs == None:
             pass
         else:
@@ -213,7 +212,6 @@ def parsend(log_list, q_dict, s_logger):
     if q_dict['logtype'] == "traffic":
         logs = panLogParse.parseTraffic(log_list)
         for log in logs:
-            # logger.debug('sending {}'.format(log))
             s_logger.debug(log)
     elif q_dict['logtype'] == "threat":
         logs = panLogParse.parseThreat(log_list)

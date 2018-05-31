@@ -230,20 +230,20 @@ def main():
                   "Please start the service manually"
         exit(0)
     elif args.uninstall:
-        # confirm = raw_input('This will uninstall Valkyrie from your system.\n'
-        #                     'Are you sure? (y/N): ')
-        # if confirm == ('' or 'n' or 'N' or 'no' or 'No' or 'NO'):
-        #     logger.info('Cancelling uninstall at user request.')
-        #     exit(0)
-        # elif confirm == ('y' or 'Y' or 'Yes' or 'yes' or 'YES'):
-        #     print "Proceding with uninstall."
-        #     logger.warning('Uninstall confirmed by user')
-        #     svcStop()
-        #     removeFiles()
-        # else:
-        #     print "Please enter y or n. Exiting now."
-        #     logger.warning('Invalid choice for confirmation prompt. Exiting.')
-        #     exit(0)
+        confirm = raw_input('This will uninstall Valkyrie from your system.\n'
+                            'Are you sure? (y/N): ')
+        if confirm == ('' or 'n' or 'N' or 'no' or 'No' or 'NO'):
+            logger.info('Cancelling uninstall at user request.')
+            exit(0)
+        elif confirm == ('y' or 'Y' or 'Yes' or 'yes' or 'YES'):
+            print "Proceding with uninstall."
+            logger.warning('Uninstall confirmed by user')
+            svcStop()
+            removeFiles()
+        else:
+            print "Please enter y or n. Exiting now."
+            logger.warning('Invalid choice for confirmation prompt. Exiting.')
+            exit(0)
         stop = svcStop()
         if stop == 1:
             print "Failed to stop the service. Please manually stop Valkyrie after" \
