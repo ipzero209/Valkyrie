@@ -100,8 +100,6 @@ def logWorker(pano_dict, query_dict, query_id, logger):
     formatter = logging.Formatter('%(asctime)s %(name)s\t%(levelname)s:\t\t%(message)s')
     fh.setFormatter(formatter)
     w_logger.addHandler(fh)
-
-
     last_seqno = 0
     if query_dict['query'] == "":
         query_params = {'type': 'log',
@@ -129,9 +127,9 @@ def logWorker(pano_dict, query_dict, query_id, logger):
             if this_seqno > last_seqno:
                 last_seqno = int(this_seqno)
         last_seqno = str(last_seqno + 1)
-        # parsend(logs, query_dict, logger)
-        parsend_worker = Process(target=parsend, args=(logs, query_dict, logger))
-        parsend_worker.start()
+        parsend(logs, query_dict, logger)
+        # parsend_worker = Process(target=parsend, args=(logs, query_dict, logger))
+        # parsend_worker.start()
     while True:
         if query_dict['query'] == "":
             query_params = {'type' : 'log',
@@ -161,9 +159,9 @@ def logWorker(pano_dict, query_dict, query_id, logger):
                 if this_seqno > last_seqno:
                     last_seqno = int(this_seqno)
             last_seqno = str(last_seqno + 1)
-            # parsend(logs, query_dict, logger)
-            parsend_worker = Process(target=parsend, args=(logs, query_dict, logger))
-            parsend_worker.start()
+            parsend(logs, query_dict, logger)
+            # parsend_worker = Process(target=parsend, args=(logs, query_dict, logger))
+            # parsend_worker.start()
 
 
 
@@ -215,7 +213,7 @@ def parsend(log_list, q_dict, s_logger):
     if q_dict['logtype'] == "traffic":
         logs = panLogParse.parseTraffic(log_list)
         for log in logs:
-            logger.debug('sending {}'.format(log))
+            # logger.debug('sending {}'.format(log))
             s_logger.debug(log)
     elif q_dict['logtype'] == "threat":
         logs = panLogParse.parseThreat(log_list)
@@ -244,9 +242,9 @@ def main():
     pano_dict = fetchAPIKey()
     for query_id in q_dict:
         syslog = logMaker(q_dict[query_id]['destination'])
-        # logWorker(pano_dict, q_dict[query_id], query_id, syslog)
-        worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id, syslog))
-        worker_proc.start()
+        logWorker(pano_dict, q_dict[query_id], query_id, syslog)
+        # worker_proc = Process(target=logWorker, args=(pano_dict, q_dict[query_id], query_id, syslog))
+        # worker_proc.start()
 
 
 
