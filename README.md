@@ -1,9 +1,9 @@
 # Valkyrie
 Allows you to perform limited filtered forwarding of logs from Palo Alto Networks' Logging Service
 
-## This is an Alpha release. No testing has been completed yet - Do not use in production
-
-## A more detailed readme to follow.
+## This is an Beta release. 
+### Known Issues:
+1. Service exits prematurely. Workaround: Start the service manually using 'sudo /usr/local/bin/valkyrie.py &'
 
 
 
