@@ -16,7 +16,7 @@ def parseTraffic(logset):
             curr_log.append('')
         else:
             curr_log.append(serial.text)
-        curr_log.append(log.find('Cloud Services Firewall'))
+        # curr_log.append(log.find('Cloud Services Firewall'))
         curr_log.append(log.find('type').text)
         curr_log.append(log.find('subtype').text)
         curr_log.append('2049') # Future Use
