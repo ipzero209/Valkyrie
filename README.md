@@ -96,7 +96,8 @@ can be one of:
     send logs to. 
 
 To change your query processes, make the appropriate change to the conf file then
-restart the service ('sudo service valkyrie restart').
+restart the service ('sudo service valkyrie restart'). 
+###The conf file comes with one example line. Please change or remove this line when setting up Valkyrie.
 
 
 ## Ongoing Operations
