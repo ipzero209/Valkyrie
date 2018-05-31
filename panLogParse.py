@@ -43,7 +43,7 @@ def parseTraffic(logset):
         if dstuser == None:
             curr_log.append('')
         else:
-            curr_log.append(log.find('dstuser.text'))
+            curr_log.append(log.find('dstuser').text)
         curr_log.append(log.find('app').text)
         curr_log.append(log.find('vsys_id').text)
         curr_log.append(log.find('from').text)
