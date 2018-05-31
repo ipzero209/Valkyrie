@@ -424,6 +424,11 @@ def parseWF(logset):
         curr_log.append(log.find('filetype').text) # File Type - only used for WF subtype
         curr_log.append('') # X-FWD-FOR - only used for URL subtype
         curr_log.append('') # Referer - only used for URL subtype
+        sender = log.find('sender')
+        if sender == None:
+            curr_log.append('')
+        else:
+            curr_log.append(sender.text)
         curr_log.append(log.find('sender').text) # Sender - only used for WF subtype
         curr_log.append(log.find('subject').text) # Subject - only used for WF subtype
         curr_log.append(log.find('recipient').text) # Recipient - only used for WF subtype
