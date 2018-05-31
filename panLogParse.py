@@ -413,7 +413,7 @@ def parseWF(logset):
         curr_log.append(log.find('seqno').text)
         curr_log.append(log.find('actionflags').text)
         curr_log.append(log.find('srcloc').text)
-        curr_log.append(log.find('dstlog').text)
+        curr_log.append(log.find('dstloc').text)
         curr_log.append('0') # Future Use
         curr_log.append('') # Content Type
         curr_log.append(log.find('pcap_id').text)
