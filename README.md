@@ -1,9 +1,9 @@
 # Valkyrie
 Allows you to perform limited filtered forwarding of logs from Palo Alto Networks' Logging Service
 
-## This is an Alpha release. No testing has been completed yet - Do not use in production
-
-## A more detailed readme to follow.
+## This is an Beta release. 
+### Known Issues:
+1. Service exits prematurely. Workaround: Start the service manually using 'sudo /usr/local/bin/valkyrie.py &'
 
 
 
@@ -87,15 +87,15 @@ can be one of:
 
 2. Forwarding process. This takes the form of 'LOGTYPE:QUERY:DESTINATION'
 
-    A. LOGTYPE: Can be one of traffic, threat, url, wildfire.
+    A. LOGTYPE: Can be one of traffic, threat, url, wildfire (needs to be lowercase).
     
     B. QUERY: Query string to match. Uses the same query syntax as Panorama 
-    (e.g. 'subtype eq spyware').
+    (e.g. subtype eq spyware).
     
     C. DESINATION: IP address or FQDN of the syslog destination that you want to
     send logs to. 
 
-To chang your query processes, make the appropriate change to the conf file then
+To change your query processes, make the appropriate change to the conf file then
 restart the service ('sudo service valkyrie restart').
 
 
