@@ -213,7 +213,7 @@ def main():
                         'data file. The file name is \'data\' and it should  be '
                         'located at /etc/valkyrie/')
             print "Error opening the data file. Please see the setup log for details."
-            stop = svcStop()
+        stop = svcStop()
         if stop == 1:
             logger.critical('Failed to stop the service. Exiting now.')
             print "There was an error when attempting to stop the service."
