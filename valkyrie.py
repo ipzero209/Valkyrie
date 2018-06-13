@@ -149,10 +149,10 @@ def logWorker(pano_dict, query_dict, query_id, logger):
         job_id = log_xml.find('./result/job').text
         j_status = jobChecker(pano_dict, job_id)
         logs = fetchLogs(pano_dict, job_id)
-        w_logger.debug('{} logs fetched: {}'.format(query_dict['logtype'], len(logs)))
         if logs == None:
             pass
         else:
+            w_logger.debug('{} logs fetched: {}'.format(query_dict['logtype'], len(logs)))
             for log in logs:
                 this_seqno = log.find('seqno').text
                 if this_seqno > last_seqno:
